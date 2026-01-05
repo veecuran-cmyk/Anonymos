@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anonymos Dev</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --card-dark: #1e293b;
+      --accent-green: #10b981; /* Verde Matrix */
+      --accent-purple: #8b5cf6;
+      --text-light: #f8fafc;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      padding-bottom: 50px;
+    }
+
+    /* Header Matrix Style */
+    .hero-header {
+      background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.9)), url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-position: center;
+      padding: 60px 20px;
+      text-align: center;
+      border-bottom: 3px solid var(--accent-green);
+      margin-bottom: 30px;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+    }
+
+    h1 { text-shadow: 0 0 10px var(--accent-green); }
+
+    /* Menu Grid */
+    .menu-btn {
+      background: var(--card-dark);
+      border: 1px solid #334155;
+      color: var(--text-light);
+      border-radius: 12px;
+      padding: 25px;
+      width: 100%;
+      height: 100%;
+      transition: all 0.3s;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    
+    .menu-btn:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent-green);
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+    }
+
+    .menu-icon {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: var(--accent-green);
+    }
+
+    /* Badges */
+    .skill-badge {
+      background-color: rgba(139, 92, 246, 0.2);
+      color: var(--accent-purple);
+      border: 1px solid var(--accent-purple);
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      margin: 0 5px;
+    }
+
+    /* Modais */
+    .modal-content {
+      background-color: var(--card-dark);
+      color: white;
+      border: 1px solid #334155;
+    }
+    .modal-header { border-bottom: 1px solid #334155; }
+    .modal-footer { border-top: 1px solid #334155; }
+    .btn-close { filter: invert(1); }
+    
+    .form-control {
+      background-color: #0f172a;
+      border: 1px solid #334155;
+      color: white;
+    }
+    .form-control:focus {
+      background-color: #0f172a;
+      color: white;
+      border-color: var(--accent-green);
+      box-shadow: 0 0 0 0.25rem rgba(16, 185, 129, 0.25);
+    }
+
+    /* Portfólio Card */
+    .portfolio-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px 8px 0 0;
+      border-bottom: 1px solid var(--accent-green);
+    }
+    .portfolio-card {
+      border: 1px solid #334155;
+      border-radius: 8px;
+      background: #0f172a;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+
+    /* Avaliações */
+    .star-rating { color: #475569; font-size: 1.5rem; cursor: pointer; }
+    .star-rating.checked { color: var(--accent-green); text-shadow: 0 0 5px var(--accent-green); }
+
+    /* Admin Link */
+    .admin-link {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      opacity: 0.3;
+      font-size: 0.8rem;
+      color: white;
+      cursor: pointer;
+    }
+    .admin-link:hover { opacity: 1; color: var(--accent-green); } 
+
+  </style>
+</head>
+<body>
+
+  <div class="hero-header">
+    <h1><i class="fas fa-terminal"></i> &lt;@n0nim0s&gt;</h1>
+    <p class="lead text-muted">A beleza do impossível está no sonho que o torna realidade</p>
+    
+    <div class="mt-4">
+        <span class="skill-badge"><i class="fab fa-html5"></i> HTML/Web</span>
+        <span class="skill-badge"><i class="fab fa-python"></i> Python</span><br>
+        <span class="skill-badge"><i class="fab fa-java"></i> Java</span>
+    </div>
+  </div>
+
+  <div class="container">
+    
+    <div class="row row-cols-2 row-cols-md-3 g-3 mb-5 justify-content-center">
+      
+      <div class="col">
+        <button class="menu-btn" data-bs-toggle="modal" data-bs-target="#orderModal">
+          <i class="fas fa-laptop-code menu-icon"></i>
+          <h6 class="fw-bold m-0">Novo Projeto</h6>
+        </button>
+      </div>
+
+      <div class="col">
+        <button class="menu-btn" onclick="abrirPortfolio()">
+          <i class="fas fa-layer-group menu-icon" style="color: #60a5fa;"></i>
+          <h6 class="fw-bold m-0">Portfólio</h6>
+        </button>
+      </div>
+
+      <div class="col">
+        <button class="menu-btn" onclick="abrirAvaliacoes()">
+          <i class="fas fa-star menu-icon" style="color: #fbbf24;"></i>
+          <h6 class="fw-bold m-0">Feedbacks</h6>
+        </button>
+      </div>
+
+      <div class="col">
+        <button class="menu-btn" data-bs-toggle="modal" data-bs-target="#pixModal">
+          <i class="fab fa-pix menu-icon" style="color: #32bcad;"></i>
+          <h6 class="fw-bold m-0">Pagamento</h6>
+        </button>
+      </div>
+
+      <div class="col">
+        <button class="menu-btn" data-bs-toggle="modal" data-bs-target="#contactChoiceModal">
+          <i class="fas fa-address-card menu-icon" style="color: var(--accent-purple);"></i>
+          <h6 class="fw-bold m-0">Contato</h6>
+        </button>
+      </div>
+    </div>
+
+    <div class="card border-0 rounded-4 p-4 text-center" style="background: var(--card-dark); border: 1px solid var(--accent-green);">
+      <h5 style="color: var(--accent-green);">Precisa de um script ou site?</h5>
+      <p class="text-muted small m-0">É só chamar que vamos fazer</p>
+    </div>
+
+  </div>
+
+  <div class="modal fade" id="orderModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-code"></i> Iniciar Projeto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="orderForm">
+            <div class="mb-3">
+              <label class="form-label">Nome do Cliente</label>
+              <input type="text" id="clientName" class="form-control" placeholder="Seu nome ou empresa">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">WhatsApp para Contato</label>
+              <input type="tel" id="clientPhone" class="form-control" placeholder="(00) 00000-0000">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Tipo de Projeto</label>
+              <select id="projectType" class="form-control">
+                  <option value="Site / HTML">Criação de Site (HTML/CSS)</option>
+                  <option value="Script Python">Automação / Script Python</option>
+                  <option value="Sistema Java">Sistema / Backend Java</option>
+                  <option value="Outro">Outro / Correção de Bug</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Descrição Detalhada</label>
+              <textarea id="clientDesc" class="form-control" rows="4" placeholder="Descreva as funcionalidades que você precisa..."></textarea>
+            </div>
+            <button type="button" class="btn w-100 fw-bold" style="background: var(--accent-green); color: black;" onclick="enviarSolicitacao()">
+                🚀 Enviar Solicitação
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="portfolioModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-layer-group"></i> Projetos Realizados</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div id="user-portfolio-list">
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="reviewsModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">⭐ Feedback de Clientes</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="card p-3 mb-3 border-secondary bg-dark">
+            <h6>Avaliar Serviço:</h6>
+            <div class="mb-2" id="star-container">
+              <i class="fas fa-star star-rating" onclick="setStar(1)"></i>
+              <i class="fas fa-star star-rating" onclick="setStar(2)"></i>
+              <i class="fas fa-star star-rating" onclick="setStar(3)"></i>
+              <i class="fas fa-star star-rating" onclick="setStar(4)"></i>
+              <i class="fas fa-star star-rating" onclick="setStar(5)"></i>
+            </div>
+            <input type="text" id="reviewName" class="form-control form-control-sm mb-2" placeholder="Seu Nome">
+            <textarea id="reviewText" class="form-control form-control-sm mb-2" placeholder="Comentário..."></textarea>
+            <button class="btn btn-sm btn-outline-light" onclick="enviarAvaliacao()">Publicar</button>
+          </div>
+          <hr class="border-secondary">
+          <div id="reviews-list">Carregando...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="pixModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content text-center">
+        <div class="modal-header border-0">
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body pb-5">
+          <i class="fab fa-pix text-light" style="font-size: 4rem;"></i>
+          <h3 class="mt-3">Pagamento via Pix</h3>
+          <p class="text-muted">Copie a chave para realizar o pagamento.</p>
+          
+          <div class="input-group mb-3 mt-4">
+            <input type="text" class="form-control text-center text-white bg-dark border-secondary" id="pixKey" value="Carregando..." readonly>
+            <button class="btn btn-outline-success" onclick="copiarPix()"><i class="fas fa-copy"></i> Copiar</button>
+          </div>
+          <small class="text-success fw-bold" id="copyMsg" style="display:none;">Chave copiada com sucesso!</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="contactChoiceModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Fale Comigo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center">
+          <div class="d-grid gap-3">
+            <a href="#" id="btnWhatsappAction" target="_blank" class="btn btn-success btn-lg">
+              <i class="fab fa-whatsapp"></i> Chamar no WhatsApp
+            </a>
+            <a href="#" id="btnEmailAction" class="btn btn-primary btn-lg" style="background: var(--accent-purple); border:none;">
+              <i class="fas fa-envelope"></i> Enviar E-mail
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="adminLoginModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title">Acesso Desenvolvedor 🔐</h6>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="password" id="adminPass" class="form-control mb-3" placeholder="Senha">
+          <button class="btn btn-light w-100" onclick="verificarSenhaAdmin()">Entrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="adminDashboardModal" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white border-bottom border-secondary">
+          <h5 class="modal-title">💻 Painel de Controle</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          
+          <ul class="nav nav-pills mb-3" id="adminTabs" role="tablist">
+            <li class="nav-item">
+              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-fila">Pedidos</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-portfolio">Portfólio</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-config">Configurações</button>
+            </li>
+          </ul>
+
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="tab-fila">
+              <button class="btn btn-sm btn-outline-info mb-3" onclick="atualizarFilaAdmin()">🔄 Atualizar Lista</button>
+              <div id="admin-queue-container">Carregando...</div>
+            </div>
+            
+            <div class="tab-pane fade" id="tab-portfolio">
+                <div class="card p-3 bg-dark border-secondary mb-3">
+                    <h6 class="text-info">Adicionar Novo Projeto ao Feed</h6>
+                    <input type="text" id="adminPortTitulo" class="form-control mb-2" placeholder="Título do Projeto">
+                    <input type="text" id="adminPortImg" class="form-control mb-2" placeholder="Link da Imagem (URL)">
+                    <textarea id="adminPortDesc" class="form-control mb-2" placeholder="Descrição curta"></textarea>
+                    <button class="btn btn-success btn-sm w-100" onclick="adicionarProjetoPortfolio()">Publicar no Feed</button>
+                </div>
+                <hr class="border-secondary">
+                <h6 class="text-light">Projetos Ativos:</h6>
+                <div id="admin-portfolio-list">Carregando...</div>
+            </div>
+
+            <div class="tab-pane fade" id="tab-config">
+              <div class="card p-4 border-secondary bg-dark">
+                <h5 class="mb-4 text-info">Dados de Contato e Recebimento</h5>
+                
+                <div class="mb-3">
+                  <label class="form-label text-light">Chave Pix</label>
+                  <input type="text" id="configPix" class="form-control" placeholder="Sua chave pix">
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label text-light">Seu WhatsApp</label>
+                  <input type="text" id="configZap" class="form-control" placeholder="11999999999">
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label text-light">Seu E-mail</label>
+                  <input type="text" id="configEmail" class="form-control" placeholder="seuemail@exemplo.com">
+                </div>
+
+                <button class="btn btn-success w-100" onclick="salvarConfiguracoesAdmin()">
+                  <i class="fas fa-save"></i> Salvar Dados
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Sair</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-link" data-bs-toggle="modal" data-bs-target="#adminLoginModal">
+    <i class="fas fa-user-shield"></i> Admin
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+    import { getDatabase, ref, push, get, remove, set } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+
+    // --- CONFIGURAÇÃO FIREBASE ---
+    // Mantenha suas chaves originais
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCXqJ9j_fEQueDC2EsvQ_kJUnQ2QeD1yys",
+  authDomain: "teste-abf78.firebaseapp.com",
+  databaseURL: "https://teste-abf78-default-rtdb.firebaseio.com",
+  projectId: "teste-abf78",
+  storageBucket: "teste-abf78.firebasestorage.app",
+  messagingSenderId: "313856088114",
+  appId: "1:313856088114:web:0bcec2820bb9aea537c42b",
+  measurementId: "G-V4XGJL1JF4"
+};
+
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // --- Variáveis Globais ---
+    let currentRating = 0;
+    // --- CARREGAMENTO INICIAL ---
+    window.onload = function() {
+        carregarConfiguracoesGerais();
+    };
+
+    function carregarConfiguracoesGerais() {
+        get(ref(database, 'config_dev_site')).then((snapshot) => {
+            if(snapshot.exists()) {
+                const config = snapshot.val();
+                
+                // PIX
+                if(config.pix) {
+                    const pixInput = document.getElementById('pixKey');
+                    if(pixInput) pixInput.value = config.pix;
+                }
+                
+                // WHATSAPP
+                if(config.whatsapp) {
+                    const zapBtn = document.getElementById('btnWhatsappAction');
+                    const cleanNumber = config.whatsapp.replace(/\D/g, '');
+                    if(zapBtn) zapBtn.href = `https://wa.me/55${cleanNumber}`;
+                }
+
+                // EMAIL
+                if(config.email) {
+                    const emailBtn = document.getElementById('btnEmailAction');
+                    if(emailBtn) emailBtn.href = `mailto:${config.email}`;
+                }
+            } else {
+                document.getElementById('pixKey').value = "Não configurado";
+            }
+        });
+    }
+
+    // --- 1. PEDIDOS DE PROJETO ---
+    window.enviarSolicitacao = function() {
+        const nome = document.getElementById('clientName').value;
+        const phone = document.getElementById('clientPhone').value;
+        const type = document.getElementById('projectType').value;
+        const desc = document.getElementById('clientDesc').value;
+
+        if(!nome || !phone || !desc) {
+            alert("Por favor, preencha os campos obrigatórios.");
+            return;
+        }
+
+        push(ref(database, 'servicos_dev'), {
+            cliente: nome,
+            telefone: phone,
+            tipo: type,
+            descricao: desc,
+            timestamp: Date.now()
+        }).then(() => {
+            alert("✅ Solicitação enviada! Analisarei seu projeto em breve.");
+            document.getElementById('orderForm').reset();
+            const modal = bootstrap.Modal.getInstance(document.getElementById('orderModal'));
+            modal.hide();
+        });
+    }
+
+    // --- 2. PORTFÓLIO (USUÁRIO) ---
+    window.abrirPortfolio = function() {
+        const modal = new bootstrap.Modal(document.getElementById('portfolioModal'));
+        modal.show();
+        carregarPortfolioUser();
+    }
+
+    function carregarPortfolioUser() {
+        const list = document.getElementById('user-portfolio-list');
+        list.innerHTML = '<div class="text-center"><div class="spinner-border text-success"></div></div>';
+
+        get(ref(database, 'portfolio_dev')).then((snapshot) => {
+            list.innerHTML = '';
+            if(!snapshot.exists()) {
+                list.innerHTML = '<p class="text-center text-muted">Nenhum projeto publicado ainda.</p>';
+                return;
+    }
+
+            const items = [];
+            snapshot.forEach(child => items.push(child.val()));
+            items.reverse(); // Mais recentes primeiro
+
+            items.forEach(proj => {
+                // Se não tiver imagem, usa uma padrão
+                const imgUrl = proj.imagem && proj.imagem.length > 5 ? proj.imagem : 'https://via.placeholder.com/400x200?text=Projeto';
+                
+                list.innerHTML += `
+                    <div class="portfolio-card">
+                        <img src="${imgUrl}" alt="Projeto">
+                        <div class="p-3">
+                            <h5 class="text-light fw-bold mb-1">${proj.titulo}</h5>
+                            <p class="text-muted small mb-0">${proj.descricao}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        });
+    }
+
+
+    // --- 3. AVALIAÇÕES ---
+    window.setStar = function(n) {
+        currentRating = n;
+        const stars = document.querySelectorAll('#star-container .star-rating');
+        stars.forEach((s, index) => {
+            if(index < n) s.classList.add('checked');
+            else s.classList.remove('checked');
+        });
+    }
+
+    window.enviarAvaliacao = function() {
+        const nome = document.getElementById('reviewName').value;
+        const texto = document.getElementById('reviewText').value;
+
+        if(!nome || currentRating === 0) {
+            alert("Preencha o nome e a nota!");
+            return;
+        }
+
+        push(ref(database, 'avaliacoes_dev'), {
+            nome: nome,
+            estrelas: currentRating,
+            comentario: texto,
+            timestamp: Date.now()
+        }).then(() => {
+            document.getElementById('reviewName').value = "";
+            document.getElementById('reviewText').value = "";
+            setStar(0); 
+            carregarAvaliacoes(); 
+        });
+    }
+
+    window.abrirAvaliacoes = function() {
+        const modal = new bootstrap.Modal(document.getElementById('reviewsModal'));
+        modal.show();
+        carregarAvaliacoes();
+    }
+
+    function carregarAvaliacoes() {
+        const list = document.getElementById('reviews-list');
+        list.innerHTML = '<div class="spinner-border spinner-border-sm text-light"></div>';
+        
+        get(ref(database, 'avaliacoes_dev')).then((snapshot) => {
+            list.innerHTML = '';
+            if(!snapshot.exists()) {
+                list.innerHTML = '<p class="text-muted text-center">Nenhuma avaliação ainda.</p>';
+                return;
+            }
+            
+            const reviews = [];
+            snapshot.forEach(child => reviews.push(child.val()));
+            reviews.reverse();
+
+            reviews.forEach(rev => {
+                let starsHTML = '';
+                for(let i=0; i<5; i++) {
+                    starsHTML += i < rev.estrelas ? '<i class="fas fa-star text-warning"></i>' : '<i class="fas fa-star text-secondary"></i>';
+                }
+
+                list.innerHTML += `
+                    <div class="mb-3 border-bottom border-secondary pb-2">
+                        <div class="d-flex justify-content-between">
+                            <strong class="text-light">${rev.nome}</strong>
+                            <small>${starsHTML}</small>
+                        </div>
+                        <p class="mb-0 small text-muted">${rev.comentario}</p>
+                    </div>
+                `;
+            });
+        });
+    }
+
+    // --- 4. PIX ---
+    window.copiarPix = function() {
+        const copyText = document.getElementById("pixKey");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); 
+        navigator.clipboard.writeText(copyText.value);
+        
+        const msg = document.getElementById("copyMsg");
+        msg.style.display = "block";
+        setTimeout(() => msg.style.display = "none", 2000);
+    }
+
+    // --- 5. ADMIN ---
+    
+    window.verificarSenhaAdmin = function() {
+    const passDigitada = document.getElementById('adminPass').value;
+    
+    // Buscamos a senha que está salva no Firebase
+    get(ref(database, 'config_seguranca/admin_password')).then((snapshot) => {
+        if (snapshot.exists()) {
+            const senhaCorreta = snapshot.val();
+            
+            if (passDigitada === senhaCorreta) {
+                // Senha correta - Fecha login e abre painel
+                const modalLogin = bootstrap.Modal.getInstance(document.getElementById('adminLoginModal'));
+                modalLogin.hide();
+                const modalDash = new bootstrap.Modal(document.getElementById('adminDashboardModal'));
+                modalDash.show();
+                
+                // Carrega os dados do painel
+                atualizarFilaAdmin();
+                carregarPortfolioAdmin();
+                carregarConfigsNoInput();
+                
+                // Limpa o campo de senha por segurança
+                document.getElementById('adminPass').value = "";
+            } else {
+                alert("Senha incorreta!");
+            }
+        } else {
+            alert("Erro na configuração de segurança. Defina a senha no banco de dados.");
+        }
+    }).catch((error) => {
+        console.error("Erro ao verificar senha:", error);
+        alert("Erro de conexão com o servidor.");
+    });
+}
+
+    function carregarConfigsNoInput() {
+         get(ref(database, 'config_dev_site')).then((snapshot) => {
+            if(snapshot.exists()) {
+                const config = snapshot.val();
+                if(config.pix) document.getElementById('configPix').value = config.pix;
+                if(config.whatsapp) document.getElementById('configZap').value = config.whatsapp;
+                if(config.email) document.getElementById('configEmail').value = config.email;
+            }
+         });
+    }
+
+    window.salvarConfiguracoesAdmin = function() {
+        const pix = document.getElementById('configPix').value;
+        const zap = document.getElementById('configZap').value;
+        const email = document.getElementById('configEmail').value;
+
+        set(ref(database, 'config_dev_site'), {
+            pix: pix,
+            whatsapp: zap,
+            email: email
+        }).then(() => {
+            alert("✅ Configurações salvas!");
+            carregarConfiguracoesGerais();
+        });
+    }
+
+    window.atualizarFilaAdmin = function() {
+        const container = document.getElementById('admin-queue-container');
+        container.innerHTML = 'Buscando projetos...';
+        
+        get(ref(database, 'servicos_dev')).then((snapshot) => {
+            container.innerHTML = '';
+            if(!snapshot.exists()) {
+                container.innerHTML = '<p class="text-muted">Nenhum projeto pendente.</p>'; 
+                return;
+            }
+
+            snapshot.forEach((child) => {
+                const key = child.key;
+                const dados = child.val();
+                const zapLink = `https://wa.me/55${dados.telefone.replace(/\D/g, '')}`;
+
+                container.innerHTML += `
+                    <div class="card mb-2 border-secondary bg-dark text-light">
+                        <div class="card-body py-2">
+                            <div class="d-flex justify-content-between">
+                                <h6 class="fw-bold text-success">${dados.cliente}</h6>
+                                <span class="badge bg-secondary">${dados.tipo}</span>
+                            </div>
+                            <p class="small mb-1 mt-2">${dados.descricao}</p>
+                            <div class="d-flex gap-2 mt-3">
+                                <a href="${zapLink}" target="_blank" class="btn btn-sm btn-success"><i class="fab fa-whatsapp"></i> Contatar</a>
+                                <button class="btn btn-sm btn-outline-danger" onclick="apagarPedido('${key}')"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        });
+    }
+
+    window.apagarPedido = function(key) {
+        if(confirm("Excluir este pedido da lista?")) {
+            remove(ref(database, `servicos_dev/${key}`))
+            .then(() => atualizarFilaAdmin());
+        }
+    }
+
+    // --- FUNÇÕES ADMIN PORTFÓLIO ---
+
+    window.adicionarProjetoPortfolio = function() {
+        const titulo = document.getElementById('adminPortTitulo').value;
+        const img = document.getElementById('adminPortImg').value;
+        const desc = document.getElementById('adminPortDesc').value;
+
+        if(!titulo || !desc) {
+            alert("Título e Descrição são obrigatórios.");
+            return;
+        }
+
+        push(ref(database, 'portfolio_dev'), {
+            titulo: titulo,
+            imagem: img,
+            descricao: desc,
+            timestamp: Date.now()
+        }).then(() => {
+            alert("Projeto publicado no Feed!");
+            document.getElementById('adminPortTitulo').value = "";
+            document.getElementById('adminPortImg').value = "";
+            document.getElementById('adminPortDesc').value = "";
+            carregarPortfolioAdmin();
+        });
+    }
+
+    window.carregarPortfolioAdmin = function() {
+        const list = document.getElementById('admin-portfolio-list');
+        list.innerHTML = "Carregando...";
+        
+        get(ref(database, 'portfolio_dev')).then((snapshot) => {
+            list.innerHTML = "";
+            if(!snapshot.exists()) {
+                list.innerHTML = "<small class='text-muted'>Nada postado.</small>";
+                return;
+            }
+            snapshot.forEach((child) => {
+                const key = child.key;
+                const data = child.val();
+                list.innerHTML += `
+                    <div class="d-flex justify-content-between align-items-center border-bottom border-secondary py-2">
+                        <span class="text-truncate" style="max-width: 70%;">${data.titulo}</span>
+                        <button class="btn btn-sm btn-danger" onclick="removerProjetoPortfolio('${key}')"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+            });
+        });
+    }
+
+    window.removerProjetoPortfolio = function(key) {
+        if(confirm("Remover este projeto do Feed?")) {
+            remove(ref(database, `portfolio_dev/${key}`))
+            .then(() => carregarPortfolioAdmin());
+        }
+    }
+
+  </script>
+</body>
+</html>
